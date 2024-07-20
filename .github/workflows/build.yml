@@ -3,10 +3,11 @@ name: Build pipeline analyser
 on:
   push:
     branches:
-      - main
+      - PipelineAnalyser
   pull_request:
     branches:
-      - main
+      - PipelineAnalyser
+
 jobs:
   build:
     runs-on: ubuntu-latest
