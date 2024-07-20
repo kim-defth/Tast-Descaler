@@ -3,10 +3,10 @@ name: Build pipeline analyser
 on:
   push:
     branches:
-      - PipelineAnalyser
+      - main
   pull_request:
     branches:
-      - PipelineAnalyser
+      - main
 
 jobs:
   build:
