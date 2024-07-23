@@ -1,0 +1,47 @@
+name: Build and Capture Logs
+
+on:
+    push:
+      branches: [ "capture-build-logs-2" ]
+    pull_request:
+      branches: [ "capture-build-logs-2" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+          node-version: [16.x]
+          # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: ./simple-react_app/my-app/package-lock.json
+
+    - name: npm install
+      working-directory: ./simple-react_app/my-app
+      run: npm ci > build.log 2>&1
+        
+    - name: npm run build
+      run: npm run build --if-present >> build.log 2>&1
+      working-directory: ./simple-react_app/my-app
+    
+    - name: Check logs for deprecation warnings
+      run: |
+        grep -i "WARN" build.log > warnings.log
+        cat warnings.log
+
+      working-directory: ./simple-react_app/my-app
+
+    - name: Upload build log to artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-log
+        path: ./simple-react_app/my-app/build.log
