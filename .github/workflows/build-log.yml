@@ -2,9 +2,9 @@ name: Build and Capture Logs
 
 on:
     push:
-      branches: [ "capture-build-logs-2" ]
+      branches: [ "main" ]
     pull_request:
-      branches: [ "capture-build-logs-2" ]
+      branches: [ "main" ]
 
 jobs:
   build:
